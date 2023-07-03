@@ -1,0 +1,20 @@
+{
+  "version": "32.0.0",
+  "files": {
+    "71fd6488c90cc8e635da832b1acf04132fb264cd7eb6268d4d803d8bf857a2d7": {
+      "source": {
+        "path": "aws-rip-dev.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "115170050175-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-115170050175-us-east-1",
+          "objectKey": "71fd6488c90cc8e635da832b1acf04132fb264cd7eb6268d4d803d8bf857a2d7.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::115170050175:role/cdk-hnb659fds-file-publishing-role-115170050175-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

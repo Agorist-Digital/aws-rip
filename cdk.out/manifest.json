@@ -1,0 +1,178 @@
+{
+  "version": "32.0.0",
+  "artifacts": {
+    "aws-rip-dev.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "aws-rip-dev.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "aws-rip-dev": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://115170050175/us-east-1",
+      "properties": {
+        "templateFile": "aws-rip-dev.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::115170050175:role/cdk-hnb659fds-deploy-role-115170050175-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::115170050175:role/cdk-hnb659fds-cfn-exec-role-115170050175-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-115170050175-us-east-1/71fd6488c90cc8e635da832b1acf04132fb264cd7eb6268d4d803d8bf857a2d7.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "aws-rip-dev.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::115170050175:role/cdk-hnb659fds-lookup-role-115170050175-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "aws-rip-dev.assets"
+      ],
+      "metadata": {
+        "/aws-rip-dev/aws-rip-test-repo/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestrepo592E86EA"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-repo/awsripdevawsriptestpplPipelineC7C66E16-main-EventRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestrepoawsripdevawsriptestpplPipelineC7C66E16mainEventRuleA3900D46"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/ArtifactsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineArtifactsBucket7D937682"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/ArtifactsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineArtifactsBucketPolicy5638B060"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineRole237A7B31"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineRoleDefaultPolicy44AB27D7"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipeline18C3638B"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/Source/CodeCommit/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineSourceCodeCommitCodePipelineActionRole9B9FF3F6"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/Source/CodeCommit/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineSourceCodeCommitCodePipelineActionRoleDefaultPolicy61619775"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/EventsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineEventsRoleC84A9294"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/EventsRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineEventsRoleDefaultPolicy7D15EF2B"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineBuildSynthCdkBuildProjectRoleA6947D79"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineBuildSynthCdkBuildProjectRoleDefaultPolicy05E7B6C6"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplPipelineBuildSynthCdkBuildProject5CBFA910"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/CodeBuildActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplCodeBuildActionRole641D9DF7"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/CodeBuildActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplCodeBuildActionRoleDefaultPolicy77D9C773"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplUpdatePipelineSelfMutationRoleB1D98B5E"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplUpdatePipelineSelfMutationRoleDefaultPolicy6201853E"
+          }
+        ],
+        "/aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "awsriptestpplUpdatePipelineSelfMutation5F86F2B3"
+          }
+        ],
+        "/aws-rip-dev/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/aws-rip-dev/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/aws-rip-dev/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "aws-rip-dev"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

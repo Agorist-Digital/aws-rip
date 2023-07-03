@@ -1,0 +1,1449 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "aws-rip-dev": {
+        "id": "aws-rip-dev",
+        "path": "aws-rip-dev",
+        "children": {
+          "aws-rip-test-repo": {
+            "id": "aws-rip-test-repo",
+            "path": "aws-rip-dev/aws-rip-test-repo",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "aws-rip-dev/aws-rip-test-repo/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CodeCommit::Repository",
+                  "aws:cdk:cloudformation:props": {
+                    "repositoryName": "aws-rip-test-repo"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_codecommit.CfnRepository",
+                  "version": "2.86.0"
+                }
+              },
+              "awsripdevawsriptestpplPipelineC7C66E16-main-EventRule": {
+                "id": "awsripdevawsriptestpplPipelineC7C66E16-main-EventRule",
+                "path": "aws-rip-dev/aws-rip-test-repo/awsripdevawsriptestpplPipelineC7C66E16-main-EventRule",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "aws-rip-dev/aws-rip-test-repo/awsripdevawsriptestpplPipelineC7C66E16-main-EventRule/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Events::Rule",
+                      "aws:cdk:cloudformation:props": {
+                        "eventPattern": {
+                          "source": [
+                            "aws.codecommit"
+                          ],
+                          "resources": [
+                            {
+                              "Fn::GetAtt": [
+                                "awsriptestrepo592E86EA",
+                                "Arn"
+                              ]
+                            }
+                          ],
+                          "detail-type": [
+                            "CodeCommit Repository State Change"
+                          ],
+                          "detail": {
+                            "event": [
+                              "referenceCreated",
+                              "referenceUpdated"
+                            ],
+                            "referenceName": [
+                              "main"
+                            ]
+                          }
+                        },
+                        "state": "ENABLED",
+                        "targets": [
+                          {
+                            "id": "Target0",
+                            "arn": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "arn:",
+                                  {
+                                    "Ref": "AWS::Partition"
+                                  },
+                                  ":codepipeline:us-east-1:115170050175:",
+                                  {
+                                    "Ref": "awsriptestpplPipeline18C3638B"
+                                  }
+                                ]
+                              ]
+                            },
+                            "roleArn": {
+                              "Fn::GetAtt": [
+                                "awsriptestpplPipelineEventsRoleC84A9294",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_events.CfnRule",
+                      "version": "2.86.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_events.Rule",
+                  "version": "2.86.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_codecommit.Repository",
+              "version": "2.86.0"
+            }
+          },
+          "aws-rip-test-ppl": {
+            "id": "aws-rip-test-ppl",
+            "path": "aws-rip-dev/aws-rip-test-ppl",
+            "children": {
+              "Pipeline": {
+                "id": "Pipeline",
+                "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline",
+                "children": {
+                  "ArtifactsBucket": {
+                    "id": "ArtifactsBucket",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/ArtifactsBucket",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/ArtifactsBucket/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                          "aws:cdk:cloudformation:props": {
+                            "bucketEncryption": {
+                              "serverSideEncryptionConfiguration": [
+                                {
+                                  "serverSideEncryptionByDefault": {
+                                    "sseAlgorithm": "aws:kms"
+                                  }
+                                }
+                              ]
+                            },
+                            "publicAccessBlockConfiguration": {
+                              "blockPublicAcls": true,
+                              "blockPublicPolicy": true,
+                              "ignorePublicAcls": true,
+                              "restrictPublicBuckets": true
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                          "version": "2.86.0"
+                        }
+                      },
+                      "Policy": {
+                        "id": "Policy",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/ArtifactsBucket/Policy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/ArtifactsBucket/Policy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                              "aws:cdk:cloudformation:props": {
+                                "bucket": {
+                                  "Ref": "awsriptestpplPipelineArtifactsBucket7D937682"
+                                },
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "s3:*",
+                                      "Condition": {
+                                        "Bool": {
+                                          "aws:SecureTransport": "false"
+                                        }
+                                      },
+                                      "Effect": "Deny",
+                                      "Principal": {
+                                        "AWS": "*"
+                                      },
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "awsriptestpplPipelineArtifactsBucket7D937682",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "awsriptestpplPipelineArtifactsBucket7D937682",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                              "version": "2.86.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                          "version": "2.86.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.Bucket",
+                      "version": "2.86.0"
+                    }
+                  },
+                  "Role": {
+                    "id": "Role",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Role",
+                    "children": {
+                      "ImportRole": {
+                        "id": "ImportRole",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Role/ImportRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.86.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Role/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "codepipeline.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.86.0"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Role/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Role/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "s3:GetObject*",
+                                        "s3:GetBucket*",
+                                        "s3:List*",
+                                        "s3:DeleteObject*",
+                                        "s3:PutObject",
+                                        "s3:PutObjectLegalHold",
+                                        "s3:PutObjectRetention",
+                                        "s3:PutObjectTagging",
+                                        "s3:PutObjectVersionTagging",
+                                        "s3:Abort*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "awsriptestpplPipelineArtifactsBucket7D937682",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "awsriptestpplPipelineArtifactsBucket7D937682",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "awsriptestpplPipelineSourceCodeCommitCodePipelineActionRole9B9FF3F6",
+                                          "Arn"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "awsriptestpplCodeBuildActionRole641D9DF7",
+                                          "Arn"
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "awsriptestpplPipelineRoleDefaultPolicy44AB27D7",
+                                "roles": [
+                                  {
+                                    "Ref": "awsriptestpplPipelineRole237A7B31"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.86.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.86.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.86.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CodePipeline::Pipeline",
+                      "aws:cdk:cloudformation:props": {
+                        "roleArn": {
+                          "Fn::GetAtt": [
+                            "awsriptestpplPipelineRole237A7B31",
+                            "Arn"
+                          ]
+                        },
+                        "stages": [
+                          {
+                            "name": "Source",
+                            "actions": [
+                              {
+                                "name": {
+                                  "Fn::GetAtt": [
+                                    "awsriptestrepo592E86EA",
+                                    "Name"
+                                  ]
+                                },
+                                "outputArtifacts": [
+                                  {
+                                    "name": "c8e50bb698f673471403e9bfa6a85b65b713e8337c_Source"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Source",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeCommit"
+                                },
+                                "configuration": {
+                                  "RepositoryName": {
+                                    "Fn::GetAtt": [
+                                      "awsriptestrepo592E86EA",
+                                      "Name"
+                                    ]
+                                  },
+                                  "BranchName": "main",
+                                  "PollForSourceChanges": false
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "awsriptestpplPipelineSourceCodeCommitCodePipelineActionRole9B9FF3F6",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "Build",
+                            "actions": [
+                              {
+                                "name": "Synth",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "c8e50bb698f673471403e9bfa6a85b65b713e8337c_Source"
+                                  }
+                                ],
+                                "outputArtifacts": [
+                                  {
+                                    "name": "Synth_Output"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Build",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeBuild"
+                                },
+                                "configuration": {
+                                  "ProjectName": {
+                                    "Ref": "awsriptestpplPipelineBuildSynthCdkBuildProject5CBFA910"
+                                  },
+                                  "EnvironmentVariables": "[{\"name\":\"_PROJECT_CONFIG_HASH\",\"type\":\"PLAINTEXT\",\"value\":\"aedc2a263e3a55ea85d1ffc90c7de48a3aa16656d50269e7451e5a72852a755e\"}]"
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "awsriptestpplCodeBuildActionRole641D9DF7",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "UpdatePipeline",
+                            "actions": [
+                              {
+                                "name": "SelfMutate",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "Synth_Output"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Build",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeBuild"
+                                },
+                                "configuration": {
+                                  "ProjectName": {
+                                    "Ref": "awsriptestpplUpdatePipelineSelfMutation5F86F2B3"
+                                  },
+                                  "EnvironmentVariables": "[{\"name\":\"_PROJECT_CONFIG_HASH\",\"type\":\"PLAINTEXT\",\"value\":\"643b405403d5976bcc4ccce63befe78e98a3581fce3b2a8ab8b6b1dd84c7bb16\"}]"
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "awsriptestpplCodeBuildActionRole641D9DF7",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        ],
+                        "artifactStore": {
+                          "type": "S3",
+                          "location": {
+                            "Ref": "awsriptestpplPipelineArtifactsBucket7D937682"
+                          }
+                        },
+                        "restartExecutionOnUpdate": true
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_codepipeline.CfnPipeline",
+                      "version": "2.86.0"
+                    }
+                  },
+                  "Source": {
+                    "id": "Source",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Source",
+                    "children": {
+                      "CodeCommit": {
+                        "id": "CodeCommit",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Source/CodeCommit",
+                        "children": {
+                          "CodePipelineActionRole": {
+                            "id": "CodePipelineActionRole",
+                            "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Source/CodeCommit/CodePipelineActionRole",
+                            "children": {
+                              "ImportCodePipelineActionRole": {
+                                "id": "ImportCodePipelineActionRole",
+                                "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Source/CodeCommit/CodePipelineActionRole/ImportCodePipelineActionRole",
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.Resource",
+                                  "version": "2.86.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Source/CodeCommit/CodePipelineActionRole/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                  "aws:cdk:cloudformation:props": {
+                                    "assumeRolePolicyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Effect": "Allow",
+                                          "Principal": {
+                                            "AWS": {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:",
+                                                  {
+                                                    "Ref": "AWS::Partition"
+                                                  },
+                                                  ":iam::115170050175:root"
+                                                ]
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                                  "version": "2.86.0"
+                                }
+                              },
+                              "DefaultPolicy": {
+                                "id": "DefaultPolicy",
+                                "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Source/CodeCommit/CodePipelineActionRole/DefaultPolicy",
+                                "children": {
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Source/CodeCommit/CodePipelineActionRole/DefaultPolicy/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                      "aws:cdk:cloudformation:props": {
+                                        "policyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": [
+                                                "s3:GetObject*",
+                                                "s3:GetBucket*",
+                                                "s3:List*",
+                                                "s3:DeleteObject*",
+                                                "s3:PutObject",
+                                                "s3:PutObjectLegalHold",
+                                                "s3:PutObjectRetention",
+                                                "s3:PutObjectTagging",
+                                                "s3:PutObjectVersionTagging",
+                                                "s3:Abort*"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": [
+                                                {
+                                                  "Fn::GetAtt": [
+                                                    "awsriptestpplPipelineArtifactsBucket7D937682",
+                                                    "Arn"
+                                                  ]
+                                                },
+                                                {
+                                                  "Fn::Join": [
+                                                    "",
+                                                    [
+                                                      {
+                                                        "Fn::GetAtt": [
+                                                          "awsriptestpplPipelineArtifactsBucket7D937682",
+                                                          "Arn"
+                                                        ]
+                                                      },
+                                                      "/*"
+                                                    ]
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "Action": [
+                                                "codecommit:GetBranch",
+                                                "codecommit:GetCommit",
+                                                "codecommit:UploadArchive",
+                                                "codecommit:GetUploadArchiveStatus",
+                                                "codecommit:CancelUploadArchive"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": {
+                                                "Fn::GetAtt": [
+                                                  "awsriptestrepo592E86EA",
+                                                  "Arn"
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        },
+                                        "policyName": "awsriptestpplPipelineSourceCodeCommitCodePipelineActionRoleDefaultPolicy61619775",
+                                        "roles": [
+                                          {
+                                            "Ref": "awsriptestpplPipelineSourceCodeCommitCodePipelineActionRole9B9FF3F6"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                      "version": "2.86.0"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                                  "version": "2.86.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.Role",
+                              "version": "2.86.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.2.67"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.2.67"
+                    }
+                  },
+                  "EventsRole": {
+                    "id": "EventsRole",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/EventsRole",
+                    "children": {
+                      "ImportEventsRole": {
+                        "id": "ImportEventsRole",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/EventsRole/ImportEventsRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.86.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/EventsRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "events.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.86.0"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/EventsRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/EventsRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "codepipeline:StartPipelineExecution",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":codepipeline:us-east-1:115170050175:",
+                                            {
+                                              "Ref": "awsriptestpplPipeline18C3638B"
+                                            }
+                                          ]
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "awsriptestpplPipelineEventsRoleDefaultPolicy7D15EF2B",
+                                "roles": [
+                                  {
+                                    "Ref": "awsriptestpplPipelineEventsRoleC84A9294"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.86.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.86.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.86.0"
+                    }
+                  },
+                  "Build": {
+                    "id": "Build",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Build",
+                    "children": {
+                      "Synth": {
+                        "id": "Synth",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth",
+                        "children": {
+                          "CdkBuildProject": {
+                            "id": "CdkBuildProject",
+                            "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject",
+                            "children": {
+                              "Role": {
+                                "id": "Role",
+                                "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject/Role",
+                                "children": {
+                                  "ImportRole": {
+                                    "id": "ImportRole",
+                                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject/Role/ImportRole",
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.Resource",
+                                      "version": "2.86.0"
+                                    }
+                                  },
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject/Role/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                      "aws:cdk:cloudformation:props": {
+                                        "assumeRolePolicyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": "sts:AssumeRole",
+                                              "Effect": "Allow",
+                                              "Principal": {
+                                                "Service": "codebuild.amazonaws.com"
+                                              }
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        }
+                                      }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                                      "version": "2.86.0"
+                                    }
+                                  },
+                                  "DefaultPolicy": {
+                                    "id": "DefaultPolicy",
+                                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject/Role/DefaultPolicy",
+                                    "children": {
+                                      "Resource": {
+                                        "id": "Resource",
+                                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject/Role/DefaultPolicy/Resource",
+                                        "attributes": {
+                                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                          "aws:cdk:cloudformation:props": {
+                                            "policyDocument": {
+                                              "Statement": [
+                                                {
+                                                  "Action": [
+                                                    "logs:CreateLogGroup",
+                                                    "logs:CreateLogStream",
+                                                    "logs:PutLogEvents"
+                                                  ],
+                                                  "Effect": "Allow",
+                                                  "Resource": [
+                                                    {
+                                                      "Fn::Join": [
+                                                        "",
+                                                        [
+                                                          "arn:",
+                                                          {
+                                                            "Ref": "AWS::Partition"
+                                                          },
+                                                          ":logs:us-east-1:115170050175:log-group:/aws/codebuild/",
+                                                          {
+                                                            "Ref": "awsriptestpplPipelineBuildSynthCdkBuildProject5CBFA910"
+                                                          }
+                                                        ]
+                                                      ]
+                                                    },
+                                                    {
+                                                      "Fn::Join": [
+                                                        "",
+                                                        [
+                                                          "arn:",
+                                                          {
+                                                            "Ref": "AWS::Partition"
+                                                          },
+                                                          ":logs:us-east-1:115170050175:log-group:/aws/codebuild/",
+                                                          {
+                                                            "Ref": "awsriptestpplPipelineBuildSynthCdkBuildProject5CBFA910"
+                                                          },
+                                                          ":*"
+                                                        ]
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "Action": [
+                                                    "codebuild:CreateReportGroup",
+                                                    "codebuild:CreateReport",
+                                                    "codebuild:UpdateReport",
+                                                    "codebuild:BatchPutTestCases",
+                                                    "codebuild:BatchPutCodeCoverages"
+                                                  ],
+                                                  "Effect": "Allow",
+                                                  "Resource": {
+                                                    "Fn::Join": [
+                                                      "",
+                                                      [
+                                                        "arn:",
+                                                        {
+                                                          "Ref": "AWS::Partition"
+                                                        },
+                                                        ":codebuild:us-east-1:115170050175:report-group/",
+                                                        {
+                                                          "Ref": "awsriptestpplPipelineBuildSynthCdkBuildProject5CBFA910"
+                                                        },
+                                                        "-*"
+                                                      ]
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "Action": [
+                                                    "s3:GetObject*",
+                                                    "s3:GetBucket*",
+                                                    "s3:List*",
+                                                    "s3:DeleteObject*",
+                                                    "s3:PutObject",
+                                                    "s3:PutObjectLegalHold",
+                                                    "s3:PutObjectRetention",
+                                                    "s3:PutObjectTagging",
+                                                    "s3:PutObjectVersionTagging",
+                                                    "s3:Abort*"
+                                                  ],
+                                                  "Effect": "Allow",
+                                                  "Resource": [
+                                                    {
+                                                      "Fn::GetAtt": [
+                                                        "awsriptestpplPipelineArtifactsBucket7D937682",
+                                                        "Arn"
+                                                      ]
+                                                    },
+                                                    {
+                                                      "Fn::Join": [
+                                                        "",
+                                                        [
+                                                          {
+                                                            "Fn::GetAtt": [
+                                                              "awsriptestpplPipelineArtifactsBucket7D937682",
+                                                              "Arn"
+                                                            ]
+                                                          },
+                                                          "/*"
+                                                        ]
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ],
+                                              "Version": "2012-10-17"
+                                            },
+                                            "policyName": "awsriptestpplPipelineBuildSynthCdkBuildProjectRoleDefaultPolicy05E7B6C6",
+                                            "roles": [
+                                              {
+                                                "Ref": "awsriptestpplPipelineBuildSynthCdkBuildProjectRoleA6947D79"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "constructInfo": {
+                                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                          "version": "2.86.0"
+                                        }
+                                      }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                                      "version": "2.86.0"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                                  "version": "2.86.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/Build/Synth/CdkBuildProject/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
+                                  "aws:cdk:cloudformation:props": {
+                                    "artifacts": {
+                                      "type": "CODEPIPELINE"
+                                    },
+                                    "environment": {
+                                      "type": "LINUX_CONTAINER",
+                                      "image": "aws/codebuild/standard:6.0",
+                                      "imagePullCredentialsType": "CODEBUILD",
+                                      "privilegedMode": false,
+                                      "computeType": "BUILD_GENERAL1_SMALL"
+                                    },
+                                    "serviceRole": {
+                                      "Fn::GetAtt": [
+                                        "awsriptestpplPipelineBuildSynthCdkBuildProjectRoleA6947D79",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "source": {
+                                      "type": "CODEPIPELINE",
+                                      "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"npm install -g aws-cdk\",\n        \"curl -sSL https://install.python-poetry.org | python3 -\",\n        \"poetry install\",\n        \"cdk synth\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"base-directory\": \"cdk.out\",\n    \"files\": \"**/*\"\n  }\n}"
+                                    },
+                                    "cache": {
+                                      "type": "NO_CACHE"
+                                    },
+                                    "description": "Pipeline step aws-rip-dev/Pipeline/Build/Synth",
+                                    "encryptionKey": "alias/aws/s3"
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_codebuild.CfnProject",
+                                  "version": "2.86.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_codebuild.PipelineProject",
+                              "version": "2.86.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.2.67"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.2.67"
+                    }
+                  },
+                  "UpdatePipeline": {
+                    "id": "UpdatePipeline",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/UpdatePipeline",
+                    "children": {
+                      "SelfMutate": {
+                        "id": "SelfMutate",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/Pipeline/UpdatePipeline/SelfMutate",
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.2.67"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.2.67"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_codepipeline.Pipeline",
+                  "version": "2.86.0"
+                }
+              },
+              "CodeBuildActionRole": {
+                "id": "CodeBuildActionRole",
+                "path": "aws-rip-dev/aws-rip-test-ppl/CodeBuildActionRole",
+                "children": {
+                  "ImportCodeBuildActionRole": {
+                    "id": "ImportCodeBuildActionRole",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/CodeBuildActionRole/ImportCodeBuildActionRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.86.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/CodeBuildActionRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::GetAtt": [
+                                    "awsriptestpplPipelineRole237A7B31",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.86.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/CodeBuildActionRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/CodeBuildActionRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "codebuild:BatchGetBuilds",
+                                    "codebuild:StartBuild",
+                                    "codebuild:StopBuild"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "awsriptestpplPipelineBuildSynthCdkBuildProject5CBFA910",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "codebuild:BatchGetBuilds",
+                                    "codebuild:StartBuild",
+                                    "codebuild:StopBuild"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "awsriptestpplUpdatePipelineSelfMutation5F86F2B3",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "awsriptestpplCodeBuildActionRoleDefaultPolicy77D9C773",
+                            "roles": [
+                              {
+                                "Ref": "awsriptestpplCodeBuildActionRole641D9DF7"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.86.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.86.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.86.0"
+                }
+              },
+              "UpdatePipeline": {
+                "id": "UpdatePipeline",
+                "path": "aws-rip-dev/aws-rip-test-ppl/UpdatePipeline",
+                "children": {
+                  "SelfMutation": {
+                    "id": "SelfMutation",
+                    "path": "aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation",
+                    "children": {
+                      "Role": {
+                        "id": "Role",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation/Role",
+                        "children": {
+                          "ImportRole": {
+                            "id": "ImportRole",
+                            "path": "aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation/Role/ImportRole",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.Resource",
+                              "version": "2.86.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation/Role/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                              "aws:cdk:cloudformation:props": {
+                                "assumeRolePolicyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Principal": {
+                                        "Service": "codebuild.amazonaws.com"
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                              "version": "2.86.0"
+                            }
+                          },
+                          "DefaultPolicy": {
+                            "id": "DefaultPolicy",
+                            "path": "aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation/Role/DefaultPolicy",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation/Role/DefaultPolicy/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                  "aws:cdk:cloudformation:props": {
+                                    "policyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": [
+                                            "logs:CreateLogGroup",
+                                            "logs:CreateLogStream",
+                                            "logs:PutLogEvents"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": [
+                                            {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:",
+                                                  {
+                                                    "Ref": "AWS::Partition"
+                                                  },
+                                                  ":logs:us-east-1:115170050175:log-group:/aws/codebuild/",
+                                                  {
+                                                    "Ref": "awsriptestpplUpdatePipelineSelfMutation5F86F2B3"
+                                                  }
+                                                ]
+                                              ]
+                                            },
+                                            {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:",
+                                                  {
+                                                    "Ref": "AWS::Partition"
+                                                  },
+                                                  ":logs:us-east-1:115170050175:log-group:/aws/codebuild/",
+                                                  {
+                                                    "Ref": "awsriptestpplUpdatePipelineSelfMutation5F86F2B3"
+                                                  },
+                                                  ":*"
+                                                ]
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "Action": [
+                                            "codebuild:CreateReportGroup",
+                                            "codebuild:CreateReport",
+                                            "codebuild:UpdateReport",
+                                            "codebuild:BatchPutTestCases",
+                                            "codebuild:BatchPutCodeCoverages"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": {
+                                            "Fn::Join": [
+                                              "",
+                                              [
+                                                "arn:",
+                                                {
+                                                  "Ref": "AWS::Partition"
+                                                },
+                                                ":codebuild:us-east-1:115170050175:report-group/",
+                                                {
+                                                  "Ref": "awsriptestpplUpdatePipelineSelfMutation5F86F2B3"
+                                                },
+                                                "-*"
+                                              ]
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Condition": {
+                                            "ForAnyValue:StringEquals": {
+                                              "iam:ResourceTag/aws-cdk:bootstrap-role": [
+                                                "image-publishing",
+                                                "file-publishing",
+                                                "deploy"
+                                              ]
+                                            }
+                                          },
+                                          "Effect": "Allow",
+                                          "Resource": "arn:*:iam::115170050175:role/*"
+                                        },
+                                        {
+                                          "Action": "cloudformation:DescribeStacks",
+                                          "Effect": "Allow",
+                                          "Resource": "*"
+                                        },
+                                        {
+                                          "Action": "s3:ListBucket",
+                                          "Effect": "Allow",
+                                          "Resource": "*"
+                                        },
+                                        {
+                                          "Action": [
+                                            "s3:GetObject*",
+                                            "s3:GetBucket*",
+                                            "s3:List*"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": [
+                                            {
+                                              "Fn::GetAtt": [
+                                                "awsriptestpplPipelineArtifactsBucket7D937682",
+                                                "Arn"
+                                              ]
+                                            },
+                                            {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  {
+                                                    "Fn::GetAtt": [
+                                                      "awsriptestpplPipelineArtifactsBucket7D937682",
+                                                      "Arn"
+                                                    ]
+                                                  },
+                                                  "/*"
+                                                ]
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    },
+                                    "policyName": "awsriptestpplUpdatePipelineSelfMutationRoleDefaultPolicy6201853E",
+                                    "roles": [
+                                      {
+                                        "Ref": "awsriptestpplUpdatePipelineSelfMutationRoleB1D98B5E"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                  "version": "2.86.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.Policy",
+                              "version": "2.86.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Role",
+                          "version": "2.86.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "aws-rip-dev/aws-rip-test-ppl/UpdatePipeline/SelfMutation/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
+                          "aws:cdk:cloudformation:props": {
+                            "artifacts": {
+                              "type": "CODEPIPELINE"
+                            },
+                            "environment": {
+                              "type": "LINUX_CONTAINER",
+                              "image": "aws/codebuild/standard:6.0",
+                              "imagePullCredentialsType": "CODEBUILD",
+                              "privilegedMode": false,
+                              "computeType": "BUILD_GENERAL1_SMALL"
+                            },
+                            "serviceRole": {
+                              "Fn::GetAtt": [
+                                "awsriptestpplUpdatePipelineSelfMutationRoleB1D98B5E",
+                                "Arn"
+                              ]
+                            },
+                            "source": {
+                              "type": "CODEPIPELINE",
+                              "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g aws-cdk@2\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cdk -a . deploy aws-rip-dev --require-approval=never --verbose\"\n      ]\n    }\n  }\n}"
+                            },
+                            "cache": {
+                              "type": "NO_CACHE"
+                            },
+                            "description": "Pipeline step aws-rip-dev/Pipeline/UpdatePipeline/SelfMutate",
+                            "encryptionKey": "alias/aws/s3"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_codebuild.CfnProject",
+                          "version": "2.86.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_codebuild.PipelineProject",
+                      "version": "2.86.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.67"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.pipelines.CodePipeline",
+              "version": "2.86.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "aws-rip-dev/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "aws-rip-dev/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.86.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.67"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "aws-rip-dev/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.86.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "aws-rip-dev/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.86.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.86.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.2.67"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.86.0"
+    }
+  }
+}
