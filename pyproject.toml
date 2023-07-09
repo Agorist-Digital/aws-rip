@@ -14,7 +14,7 @@ readme = "README.md"
   [tool.poetry.dependencies]
   aws-cdk-lib = "^2.1.0"
   constructs = "^10.0.5"
-  python = "^3.7"
+  python = "^3.11"
 
   [tool.poetry.dev-dependencies]
   projen = "0.71.120"

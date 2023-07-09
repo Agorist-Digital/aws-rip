@@ -1,0 +1,6 @@
+# Set resource names 
+repo_name = "aws-rip-test-repo"
+pipeline_name = "aws-rip-test-ppl"
+
+# Set to true to deploy your infrastructure
+deployable = false
